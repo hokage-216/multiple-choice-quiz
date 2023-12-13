@@ -52,7 +52,33 @@ startBtn.attr('id', 'start-button');
 startBtn.addClass("btn btn-outline-primary mx-auto");
 
 // question box elements
+var questionHeader = $('<h3></h3>');
+questionHeader.attr('id', 'question-card-header');
+questionHeader.addClass("p-3");
 
+var answer1 = $('<button></button>');
+answer1.attr('id', 'answer1');
+answer1.attr("type", "button");
+answer1.addClass('btn btn-primary col-6 m-1 mx-auto');
+
+var answer2 = $('<button></button>');
+answer2.attr('id', 'answer1');
+answer2.attr("type", "button");
+answer2.addClass('btn btn-primary col-6 m-1 mx-auto');
+
+var answer3 = $('<button></button>');
+answer3.attr('id', 'answer1');
+answer3.attr("type", "button");
+answer3.addClass('btn btn-primary col-6 m-1 mx-auto');
+
+var answer4 = $('<button></button>');
+answer4.attr('id', 'answer1');
+answer4.attr("type", "button");
+answer4.addClass('btn btn-primary col-6 m-1 mx-auto');
+
+var result = $('<div></div>');
+result.attr('id', 'result');
+result.addClass('border-top border-2 p-2 m-3 fw-light fst-italic');
 
 // set question index
 var currentQuestionIndex = 0;
@@ -61,27 +87,27 @@ var resultsSecondsLeft = 1;
 // creating questions array
 const questions = [
     {
-        question: "What does CSS stand for?",
+        question: "1. What does CSS stand for?",
         options: ["A) Cascading Style Sheets", "B) Computer Style Sheets", "C) Creative Style Sheets", "D) Colorful Style Sheets"],
         correctAnswer: 0
     },
     {
-        question: "Which HTML tag is used to define an unordered list?",
+        question: "2. Which HTML tag is used to define an unordered list?",
         options: ["A) <ul>", "B) <ol>", "C) <li>", "D) <dl>"],
         correctAnswer: 0
     },
     {
-        question: "Which of the following is NOT a valid way to declare a JavaScript variable?",
+        question: "3. Which of the following is NOT a valid way to declare a JavaScript variable?",
         options: ["A) var myVariable = 10;", "B) let myVariable = 10;", "C) const myVariable = 10;", "D) myVariable = 10;"],
         correctAnswer: 3
     },
     {
-        question: "In jQuery, what does $('p.intro') select?",
+        question: "4. In jQuery, what does $('p.intro') select?",
         options: ["A) All <p> elements", "B) The first <p> element with class 'intro'", "C) The last <p> element with class 'intro'", "D) The <p> element with id 'intro'"],
         correctAnswer: 1
     },
     {
-        question: "What does the acronym DOM stand for in web development?",
+        question: "5. What does the acronym DOM stand for in web development?",
         options: ["A) Document Object Model", "B) Data Object Model", "C) Design Object Model", "D) Display Object Model"],
         correctAnswer: 0
     },
