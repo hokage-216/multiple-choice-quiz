@@ -9,5 +9,10 @@ html, body {
 }
 
 #shift-container {
+    text-align: center;
+    width: 80%;
+}
 
+#start-button {
+    width: 120px;
 }
