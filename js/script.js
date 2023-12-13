@@ -51,50 +51,47 @@ startBtn.attr("type", "button");
 startBtn.attr('id', 'start-button');
 startBtn.addClass("btn btn-outline-primary mx-auto");
 
+// question box elements
 
-//
 
 // set question index
-
 var currentQuestionIndex = 0;
 var resultsSecondsLeft = 1;
 
 // creating questions array
-
 const questions = [
     {
-        question: "Question 1",
-        options: ["answer1", "answer2", "answer3", "answer4"],
-        correctAnswer: 2
-    },
-    {
-        question: "Question 2",
-        options: ["answer1", "answer2", "answer3", "answer4"],
+        question: "What does CSS stand for?",
+        options: ["A) Cascading Style Sheets", "B) Computer Style Sheets", "C) Creative Style Sheets", "D) Colorful Style Sheets"],
         correctAnswer: 0
     },
     {
-        question: "Question 3",
-        options: ["answer1", "answer2", "answer3", "answer4"],
+        question: "Which HTML tag is used to define an unordered list?",
+        options: ["A) <ul>", "B) <ol>", "C) <li>", "D) <dl>"],
+        correctAnswer: 0
+    },
+    {
+        question: "Which of the following is NOT a valid way to declare a JavaScript variable?",
+        options: ["A) var myVariable = 10;", "B) let myVariable = 10;", "C) const myVariable = 10;", "D) myVariable = 10;"],
         correctAnswer: 3
     },
     {
-        question: "Question 4",
-        options: ["answer1", "answer2", "answer3", "answer4"],
+        question: "In jQuery, what does $('p.intro') select?",
+        options: ["A) All <p> elements", "B) The first <p> element with class 'intro'", "C) The last <p> element with class 'intro'", "D) The <p> element with id 'intro'"],
         correctAnswer: 1
     },
     {
-        question: "Question 5",
-        options: ["answer1", "answer2", "answer3", "answer4"],
-        correctAnswer: 3
+        question: "What does the acronym DOM stand for in web development?",
+        options: ["A) Document Object Model", "B) Data Object Model", "C) Design Object Model", "D) Display Object Model"],
+        correctAnswer: 0
     },
     
 ];
 
-// pull stats from local storage upon start of app
-
+// pull stats from local storage upon start of app & load start page
 function init() {
     // getLocalStorage();
-    addStartPage();
+    // addStartPage();
 }
 
 function setLocalStorage(){
@@ -149,9 +146,9 @@ function addStartPage () {
 }
 
 function displayResult(result) {
-    var resultTag = $("div");
+    var resultTag = $('<div></div>');
     resultTag.id = 'result';
-    resultTag.addClass('container-fluid');
+    resultTag.addClass('container-fluid border-top border-2 border-dark');
 
     // set timer showing correct status
     var resultsTimer = setInterval(() => {
@@ -179,14 +176,15 @@ function wrongAnswer() {
 
 // display first question after hitting start
 
+//clear the card
+
 function displayQuestions() {
     // display the first question
     const currentQuestion = questions[currentQuestionIndex];
     // event listener for button
     startBtn.on('click', )
     // clear the element
-    shiftContainer.text('');
-
+    shiftContainer.empty();
 }
 
 function checkAnswer(selectedOptionIndex) {
