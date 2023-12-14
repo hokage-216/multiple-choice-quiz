@@ -15,8 +15,8 @@
                 <button class="btn btn-link" id="view-high">View High Scores</button>
             </div>
             <div class="col-auto" id="countdown-container">
-                <span id="timer-label">Time: </span>
-                <span data-state="disabled" id="countdown"></span>
+                <span id="timer-label">Time:</span>
+                <span id="countdown"></span>
             </div>
         </div>
     </section>
@@ -24,12 +24,14 @@
     <section class="container-fluid p-5 justify-content-center" id="quiz-container">
 
         <div class="card p-4 text-center mx-auto" id="shift-container">
-            <h3 class="p-3" id="question-card-header">1. What does CSS stand for?</h3>
-            <button class="btn btn-primary col-6 m-1 mx-auto" type="button" id="answer1">A. Cascading Style Sheets</button>
-            <button class="btn btn-primary col-6 m-1 mx-auto" type="button" id="answer2">B. Computer Style Sheets</button>
-            <button class="btn btn-primary col-6 m-1 mx-auto" type="button" id="answer3">C. Creative Style Sheets</button>
-            <button class="btn btn-primary col-6 m-1 mx-auto" type="button" id="answer4">D. Colorful Style Sheets</button>
-            <div class="border-top border-2 p-2 m-3 fw-light fst-italic" id="result">WRONG!</div>
+            <h1 class="p-3" id="question-card-header">GAME OVER!</h1>
+            <div id="scoreContainer">
+                <span class="m-2" id="score-label">Your Score:</span><span id="user-score"></span>
+            </div>
+            <div class="m-4" id="initials-container">
+                <label class="m-2" for="initials">Enter Initials:</label><input type="text" name="initials" id="initials-input" required>
+            </div>
+            <button class="btn btn-primary col-3 mx-auto m-3" type="button">SUMBUT</button>
         </div>
     </section>
 

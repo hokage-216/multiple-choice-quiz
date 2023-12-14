@@ -80,9 +80,16 @@ var result = $('<div></div>');
 result.attr('id', 'result');
 result.addClass('border-top border-2 p-2 m-3 fw-light fst-italic');
 
-// set question index
+// game over elements
+
+
+
+// index variables
 var currentQuestionIndex = 0;
-var resultsSecondsLeft = 1;
+var resultsSecondsLeft = 2;
+var gameClock = 60;
+var userPoints = 0;
+const leaderboard = [];
 
 // creating questions array
 const questions = [
@@ -116,24 +123,16 @@ const questions = [
 
 // pull stats from local storage upon start of app & load start page
 function init() {
-    // getLocalStorage();
-    // addStartPage();
+    getLocalStorage();
+    addStartPage();
 }
 
-function setLocalStorage(){
+function setLocalStorage(score){
     // grab score from most recent game
     // 
 }
 
 function getLocalStorage() {
-
-}
-
-function clearHighScore () {
-
-}
-
-function displayHighScore () {
 
 }
 
@@ -143,7 +142,11 @@ function submitHighScore () {
     //TODO: Add highscore element and apend it to the page
 }
 
-function startQuiz() {
+function displayHighScore () {
+
+}
+
+function clearHighScore () {
 
 }
 
@@ -171,15 +174,33 @@ function addStartPage () {
     countContainer.append(countdown);
 }
 
+function gameOver () {
+    //clear container
+    shiftContainer.empty();
+
+
+}
+
+function gameTimer () {
+    var gameTimer = setInterval(() => {
+        gameClock--;
+        countdown.text(gameClock);
+    }, 1000);
+    if (gameTimer >= 0) {
+        clearInterval(gameTimer);
+        gameOver();
+    }
+}
+
 function displayResult(result) {
     var resultTag = $('<div></div>');
     resultTag.id = 'result';
-    resultTag.addClass('container-fluid border-top border-2 border-dark');
+    resultTag.addClass('border-top border-2 p-2 m-3 fw-light fst-italic');
 
     // set timer showing correct status
     var resultsTimer = setInterval(() => {
         resultsSecondsLeft--;
-        
+        resultTag.text(result);
     },1000);
     
     if(resultsSecondsLeft === 0) {
@@ -191,26 +212,17 @@ function displayResult(result) {
 }
 
 function correctAnswer() {
-    // display the next question
-
-    
+    // add points
+    userPoints += 20;
+    // displayu
+    displayResult("CORRECT ✅");
 }
 
 function wrongAnswer() {
-
-}
-
-// display first question after hitting start
-
-//clear the card
-
-function displayQuestions() {
-    // display the first question
-    const currentQuestion = questions[currentQuestionIndex];
-    // event listener for button
-    startBtn.on('click', )
-    // clear the element
-    shiftContainer.empty();
+    // subtract time from timer
+    gameClock -= 15;
+    // display the result
+    displayResult("WRONG ❌");
 }
 
 function checkAnswer(selectedOptionIndex) {
@@ -218,30 +230,49 @@ function checkAnswer(selectedOptionIndex) {
     const correctIndex = currentQuestion.correctAnswer;
   
     if (selectedOptionIndex === correctIndex) {
-      // Proceed to the next question or do something else
-      // go to the next question
-      currentQuestionIndex++;
-      // display contents of next question
-      displayQuestions();
       // display answer result for 2 seconds
       correctAnswer();
     } else {
-      // subtract 15 seconds from game timer
-
-      currentQuestionIndex++;
-      displayQuestions();
-      wrongAnswer();
+        wrongAnswer();
     }
   
-    // Move to the next question after checking the answer
     currentQuestionIndex++;
-    if (currentQuestionIndex < quizQuestions.length) {
-      displayQuestion(); // Display the next question
+    if (currentQuestionIndex < questions.length) {
+      displayQuestion(); // display the next question
     } else {
-      // Quiz is finished
-      console.log('Quiz finished!');
-      // Handle end of the quiz
+      gameOver(); // end game
     }
   }
 
-  init();
+function displayQuestions() {
+    // grab the current question
+    const currentQuestion = questions[currentQuestionIndex];
+    // clear the element
+    shiftContainer.empty();
+    // display question content
+    shiftContainer.append(questionHeader);
+    questionHeader.text(questions.question);
+    shiftContainer.append(answer1);
+    answer1.text(questions.options[0]);
+    answer1.on('click', () => {checkAnswer(currentQuestion.options.indexOf(answer1))});
+    shiftContainer.append(answer2);
+    answer2.text(questions.options[1]);
+    answer2.on('click', () => {checkAnswer(currentQuestion.options.indexOf(answer2))});
+    shiftContainer.append(answer3);
+    answer3.text(questions.options[2]);
+    answer3.on('click', () => {checkAnswer(currentQuestion.options.indexOf(answer3))});
+    shiftContainer.append(answer4);
+    answer4.text(questions.options[3]);
+    answer4.on('click', () => {checkAnswer(currentQuestion.options.indexOf(answer4))});
+}
+
+function startQuiz() {
+    // disable view high score button
+    viewHigh.disabled = true;
+    // display first question
+    displayQuestions();
+    // start the game timer
+    gameTimer();
+}
+
+//   init();
