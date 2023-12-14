@@ -15,9 +15,11 @@ viewContainer.attr('id', 'view-high-container');
 viewContainer.addClass("col-auto");
 
 var viewHigh = $('<button></button>');
-viewHigh.attr('id', 'view-high');
+viewHigh.attr({
+    'id': 'view-high',
+    'type': 'button'
+});
 viewHigh.addClass("btn btn-link");
-viewHigh.attr("type", "button");
 
 var countContainer = $('<div></div>');
 countContainer.attr('id', 'countdown-container');
@@ -47,7 +49,10 @@ startParagraph.attr('id', 'start-paragraph');
 startParagraph.addClass("mx-3");
 
 var startBtn = $('<button></button>');
-startBtn.attr("type", "button");
+startBtn.attr({
+    'type': 'button',
+    'id': 'start-button'
+});
 startBtn.attr('id', 'start-button');
 startBtn.addClass("btn btn-outline-primary mx-auto");
 
@@ -57,23 +62,31 @@ questionHeader.attr('id', 'question-card-header');
 questionHeader.addClass("p-3");
 
 var answer1 = $('<button></button>');
-answer1.attr('id', 'answer1');
-answer1.attr("type", "button");
+answer1.attr({
+    'id': 'answer1',
+    'type': 'button'
+});
 answer1.addClass('btn btn-primary col-6 m-1 mx-auto');
 
 var answer2 = $('<button></button>');
-answer2.attr('id', 'answer1');
-answer2.attr("type", "button");
+answer2.attr({
+    'id': 'answer2',
+    'type': 'button'
+});
 answer2.addClass('btn btn-primary col-6 m-1 mx-auto');
 
 var answer3 = $('<button></button>');
-answer3.attr('id', 'answer1');
-answer3.attr("type", "button");
+answer3.attr({
+    'id': 'answer3',
+    'type': 'button'
+});
 answer3.addClass('btn btn-primary col-6 m-1 mx-auto');
 
 var answer4 = $('<button></button>');
-answer4.attr('id', 'answer1');
-answer4.attr("type", "button");
+answer4.attr({
+    'id': 'answer4',
+    'type': 'button'
+});
 answer4.addClass('btn btn-primary col-6 m-1 mx-auto');
 
 var result = $('<div></div>');
@@ -81,6 +94,36 @@ result.attr('id', 'result');
 result.addClass('border-top border-2 p-2 m-3 fw-light fst-italic');
 
 // game over elements
+
+var gameOverHeader = $('<div></div>');
+gameOverHeader.attr('id', 'go-card-header');
+gameOverHeader.addClass('p-3');
+
+var scoreContainer = $('<div></div>');
+scoreContainer.attr('id', 'scoreContainer');
+scoreContainer.addClass('p-1');
+
+var scoreLabel = $('<span></span>');
+scoreLabel.attr('id', 'score-label');
+scoreLabel.addClass('m-2');
+
+var userScore = $('<span></span>');
+userScore.attr('id', 'user-score');
+
+var initialContainer = $('<div></div>');
+initialContainer.attr('initial-container');
+initialContainer.addClass('m-4');
+
+var initialsLabel = $('<label></label>');
+initialsLabel.attr('for', 'initials');
+initialsLabel.addClass('m-2');
+
+var userInitials = $('<input>');
+userInitials.attr({
+    'type': 'text',
+    'name': 'initials',
+    'id': 'initials-input'
+});
 
 
 
