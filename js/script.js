@@ -36,9 +36,9 @@ var quizContainer = $('<section></section>');
 quizContainer.attr('id', 'quiz-container');
 quizContainer.addClass("container-fluid p-5 justify-content-center");
 
-var shiftContainer = $('<div></div>');
-shiftContainer.attr('id', 'shift-container');
-shiftContainer.addClass("card p-4 text-center mx-auto");
+var startContainer = $('<div></div>');
+startContainer.attr('id', 'shift-container');
+startContainer.addClass("card p-4 text-center mx-auto");
 
 var startCardHeader = $('<h1></h1>');
 startCardHeader.attr('id', 'start-card-header');
@@ -93,6 +93,10 @@ var result = $('<div></div>');
 result.attr('id', 'result');
 result.addClass('border-top border-2 p-2 m-3 fw-light fst-italic');
 
+var resultTag = $('<div></div>');
+resultTag.id = 'result';
+resultTag.addClass('border-top border-2 p-2 m-3 fw-light fst-italic');
+
 // game over elements
 
 var gameOverHeader = $('<div></div>');
@@ -122,9 +126,44 @@ var userInitials = $('<input>');
 userInitials.attr({
     'type': 'text',
     'name': 'initials',
-    'id': 'initials-input'
+    'id': 'initials-input',
+    'required': true
 });
 
+var goSubmit = $('<button></button>');
+goSubmit.attr('type', 'button');
+goSubmit.addClass('btn btn-primary col-3 mx-auto m-3');
+
+// highscores variables
+var highContainer = $('<section></section>');
+highContainer.attr({'id': 'highscore-container'});
+highContainer.addClass('mt-5 mb-3 justify-content-center align-items-center text-center');
+
+var highHeader = $('<h1></h1>');
+highHeader.attr({'id':'high-header-title'});
+
+var listContainer = $('<div></div>');
+listContainer.attr('id', 'list-container');
+listContainer.addClass('m-3 p-2 col-3 mx-auto');
+
+var orderList = $('<ol></ol>');
+orderList.attr('id', 'order-container');
+orderList.addClass('m-2 p-3');
+
+var listItem = $('<li></li>');
+listItem.addClass('p-1');
+
+var hsButtonContainer = $('<div></div>');
+hsButtonContainer.attr('id', 'hs-button-container');
+hsButtonContainer.addClass('p-3 m-2');
+
+const startOverBtn = $('<button></button>');
+startOverBtn.attr('type', 'button');
+startOverBtn.addClass('btn btn-primary col-3 m-2');
+
+const clearLeaderBtn = $('<button></button>');
+clearLeaderBtn.attr('type', 'button');
+clearLeaderBtn.addClass('btn btn-primary col-3 m-2');
 
 
 // index variables
@@ -166,23 +205,46 @@ const questions = [
 
 // pull stats from local storage upon start of app & load start page
 function init() {
-    getLocalStorage();
+    // getLeaderboard();
     addStartPage();
 }
 
-function setLocalStorage(score){
-    // grab score from most recent game
-    // 
+function setLeaderboard(leaderData){
+    // set score from most recent game
+    localStorage.setItem("userData", leaderData);
 }
 
-function getLocalStorage() {
-
+function getLeaderboard() {
+    localStorage.getItem("userData", userData);
 }
 
-function submitHighScore () {
-    //TODO: Clear entire body
-    //TODO: Add new container that takes up entire body
-    //TODO: Add highscore element and apend it to the page
+function submitHighScore (userInitials) {
+    //clear entire body
+    body.empty();
+    
+    //TODO: Add new container for high scores
+    body.append(highContainer);
+    highContainer.append(highHeader);
+    highHeader.text('High Scores Leaderboard');
+    highContainer.append(leaderContainer);
+    highContainer.append(listContainer);
+    highContainer.append(listContainer);
+    
+
+
+    
+    //TODO: add highscore element and apend it to the page
+    var userInitials = initialsInput.val();
+    let userScore = userPoints; 
+    let scoreEntry = {
+        initials: userInitials,
+        score: userScore
+    };
+    leaderboard.push(scoreEntry); // append user data to leaderboard
+    leaderboard.sort((a,b) => b.score - a.score); // sort the leaderboard in descending order
+    leaderboard = leaderboard.slice(0, 10); // keeping only the top 10 scores
+
+
 }
 
 function displayHighScore () {
@@ -196,17 +258,8 @@ function clearHighScore () {
 function addStartPage () {
     //clear the current page
     body.empty();
-    // add start page
-    body.prepend(quizContainer);
-    quizContainer.append(shiftContainer);
-    shiftContainer.append(startCardHeader);
-    startCardHeader.text("LeVente's Web Developer Quiz 🧑🏾‍💻");
-    shiftContainer.append(startParagraph);
-    startParagraph.text("Try your hand at my quiz and see how high you can score! Press the start quiz button below to start the quiz. Keep in mind you loose time for each wrong question. So make sure you are confident in your answer! If you score high enough you might make the leaderboard! Do your best!");
-    shiftContainer.append(startBtn);
-    startBtn.text("START QUIZ");
-    startBtn.on('click', startQuiz());
-    body.prepend(timeContainer);
+    // append timer nav
+    body.append(timeContainer);
     timeContainer.append(timeRow);
     timeRow.append(viewContainer);
     viewContainer.append(viewHigh);
@@ -215,13 +268,37 @@ function addStartPage () {
     countContainer.append(timeLabel);
     timeLabel.text('Time: ');
     countContainer.append(countdown);
+    // append start box
+    body.append(quizContainer);
+    quizContainer.append(startContainer);
+    startContainer.append(startCardHeader);
+    startCardHeader.text("LeVente's Web Developer Quiz 🧑🏾‍💻");
+    startContainer.append(startParagraph);
+    startParagraph.text("Try your hand at my quiz and see how high you can score! Press the start quiz button below to start the quiz. Keep in mind you loose time for each wrong question. So make sure you are confident in your answer! If you score high enough you might make the leaderboard! Do your best!");
+    startContainer.append(startBtn);
+    startBtn.text("START QUIZ");
+    startBtn.on('click', startQuiz());
 }
 
 function gameOver () {
     //clear container
-    shiftContainer.empty();
-
-
+    startContainer.empty();
+    // add content
+    startContainer.append(gameOverHeader);
+    gameOverHeader.text('GAME OVER!');
+    startContainer.append(scoreContainer);
+    scoreContainer.append(scoreLabel);
+    scoreLabel.text('Your Score: ');
+    scoreContainer.append(userScore);
+    userScore.text(userPoints);
+    startContainer.append(initialContainer);
+    initialContainer.append(initialsLabel);
+    initialsLabel.text('Enter Initials Here: ');
+    initialContainer.append(userInitials);
+    startContainer.append(goSubmit);
+    goSubmit.text('Submit');
+    // send data to 
+    goSubmit.on('click', function() {submitHighScore(userInitials)});
 }
 
 function gameTimer () {
@@ -236,14 +313,10 @@ function gameTimer () {
 }
 
 function displayResult(result) {
-    var resultTag = $('<div></div>');
-    resultTag.id = 'result';
-    resultTag.addClass('border-top border-2 p-2 m-3 fw-light fst-italic');
-
     // set timer showing correct status
     var resultsTimer = setInterval(() => {
         resultsSecondsLeft--;
-        resultTag.text(result);
+        startContainer.append(resultTag).text(result);
     },1000);
     
     if(resultsSecondsLeft === 0) {
@@ -264,6 +337,7 @@ function correctAnswer() {
 function wrongAnswer() {
     // subtract time from timer
     gameClock -= 15;
+    userPoints -= 5;
     // display the result
     displayResult("WRONG ❌");
 }
@@ -281,7 +355,7 @@ function checkAnswer(selectedOptionIndex) {
   
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
-      displayQuestion(); // display the next question
+      displayQuestions(); // display the next question
     } else {
       gameOver(); // end game
     }
@@ -291,31 +365,32 @@ function displayQuestions() {
     // grab the current question
     const currentQuestion = questions[currentQuestionIndex];
     // clear the element
-    shiftContainer.empty();
+    startContainer.empty();
     // display question content
-    shiftContainer.append(questionHeader);
-    questionHeader.text(questions.question);
-    shiftContainer.append(answer1);
-    answer1.text(questions.options[0]);
-    answer1.on('click', () => {checkAnswer(currentQuestion.options.indexOf(answer1))});
-    shiftContainer.append(answer2);
-    answer2.text(questions.options[1]);
-    answer2.on('click', () => {checkAnswer(currentQuestion.options.indexOf(answer2))});
-    shiftContainer.append(answer3);
-    answer3.text(questions.options[2]);
-    answer3.on('click', () => {checkAnswer(currentQuestion.options.indexOf(answer3))});
-    shiftContainer.append(answer4);
-    answer4.text(questions.options[3]);
-    answer4.on('click', () => {checkAnswer(currentQuestion.options.indexOf(answer4))});
+    startContainer.append(questionHeader);
+    questionHeader.text(currentQuestion.question);
+    startContainer.append(answer1.text(currentQuestion.options[0]).on('click', function() {
+        checkAnswer(0);
+    }));
+    startContainer.append(answer2.text(currentQuestion.options[1]).on('click', function() {
+        checkAnswer(1);
+    }));
+    startContainer.append(answer3.text(currentQuestion.options[2]).on('click', function() {
+        checkAnswer(2);
+    }));
+    startContainer.append(answer4.text(currentQuestion.options[3]).on('click', function() {
+        checkAnswer(3);
+    }));
 }
 
 function startQuiz() {
     // disable view high score button
     viewHigh.disabled = true;
+    startContainer.append(countdown);
     // display first question
     displayQuestions();
     // start the game timer
     gameTimer();
 }
 
-//   init();
+init();
