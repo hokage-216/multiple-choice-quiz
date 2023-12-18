@@ -94,7 +94,6 @@ answer4.attr({
 answer4.addClass('btn btn-primary col-6 m-1 mx-auto');
 
 var resultTag = $('<div></div>').addClass('border-top border-2 p-2 m-3 fw-light fst-italic');
-resultTag.id = 'result';
 
 // game over elements
 
@@ -127,10 +126,9 @@ initialsLabel.addClass('m-2');
 
 var userInitials = $('<input>');
 userInitials.attr({
-    'type': 'text',
+    'type': 'textarea',
     'name': 'initials',
     'id': 'initials-input',
-    'required': true
 });
 
 var goSubmit = $('<button></button>');
@@ -160,11 +158,11 @@ var hsButtonContainer = $('<div></div>');
 hsButtonContainer.attr('id', 'hs-button-container');
 hsButtonContainer.addClass('p-3 m-2');
 
-const startOverBtn = $('<button></button>');
+var startOverBtn = $('<button></button>');
 startOverBtn.attr('type', 'button');
 startOverBtn.addClass('btn btn-primary col-3 m-2');
 
-const clearLeaderBtn = $('<button></button>');
+var clearLeaderBtn = $('<button></button>');
 clearLeaderBtn.attr('type', 'button');
 clearLeaderBtn.addClass('btn btn-primary col-3 m-2');
 
@@ -230,19 +228,20 @@ function clearHighScore () {
     listContainer.empty();
 }
 
-function gameTimer () {
+var gameTimer = function () {
     var gameTime = setInterval(() => {
         gameClock--;
         countdown.text(gameClock);
+        if (gameClock <= 0 || currentQuestionIndex > questions.length) {
+            clearInterval(gameTime);
+            displayContainer.remove();
+            gameOver();
+        }
     }, 1000);
-    if (gameClock <= 0) {
-        clearInterval(gameTime);
-        displayContainer.remove();
-        gameOver();
-    }
 }
 
 function displayHighScore () {
+
     //clear entire body
     body.empty();
     //add new container for high scores
@@ -260,11 +259,15 @@ function displayHighScore () {
     //add start over button
     highContainer.append(hsButtonContainer);
     hsButtonContainer.append(startOverBtn);
-    startOverBtn.text('Start Over').on('click', function () {addStartPage()});
+    startOverBtn.text('Start Over').on('click', function () {
+        gameOverContainer.remove();
+        resultTag.remove();
+        addStartPage();
+    });
     //add clear list button
     highContainer.append(hsButtonContainer);
     hsButtonContainer.append(clearLeaderBtn);
-    clearLeaderBtn.text('Clear Leaderboard').on('click', function () {clearHighScore()});
+    clearLeaderBtn.text('Clear Leaderboard').on('click', function () {clearHighScore();});
 }
 
 function submitHighScore (userInitials) {
@@ -280,6 +283,7 @@ function submitHighScore (userInitials) {
 }
 
 function gameOver () {
+    
     //clear container
     startContainer.remove();
     quizContainer.append(gameOverContainer);
@@ -296,38 +300,25 @@ function gameOver () {
     initialsLabel.text('Enter Initials Here: ');
     initialContainer.append(userInitials);
     gameOverContainer.append(goSubmit);
-    goSubmit.text('Submit').on('click', function() {submitHighScore(userInitials.value)});;
+    goSubmit.text('Submit').on('click', function () {
+        var userInput = userInitials.val();
+        submitHighScore(userInput);
+    });
 }
 
-function displayResult(result) {
-    // set timer showing correct status
-    var resultsTimer = setInterval(() => {
-        resultsSecondsLeft--;
-        startContainer.append(resultTag).text(result);
-    },1000);
-    
-    if(resultsSecondsLeft === 0) {
-        // Stops timer
-        clearInterval(resultsTimer);
-        // after two seconds remove the results
-        resultTag.remove();
-      }
-}
 
 function checkAnswer(selectedOptionIndex) {
-    const currentQuestion = questions[currentQuestionIndex];
+    var currentQuestion = questions[currentQuestionIndex];
     let correctIndex = currentQuestion.correctAnswer;
   
     if (selectedOptionIndex === correctIndex) {
-        // display answer result for 2 seconds
         // add points
-        userPoints += 20;
-        // displayu
+        userPoints += 25;
+        // display the result
         displayResult("CORRECT ✅");
     } else {
-        gameClock -= 10;
-        userPoints -= 5;
-        // display the result
+        gameClock -= 15;
+        userPoints -= 7;
         displayResult("WRONG ❌");
     }
   
@@ -341,8 +332,7 @@ function checkAnswer(selectedOptionIndex) {
 
 function displayQuestions() {
     // grab the current question
-    const currentQuestion = questions[currentQuestionIndex];
-    countContainer.append(countdown);
+    var currentQuestion = questions[currentQuestionIndex];
     startContainer.remove();
     // clear the element
     quizContainer.append(displayContainer);
@@ -363,14 +353,15 @@ function displayQuestions() {
     }));
 }
 
-
+function displayResult(result) {
+    displayContainer.append(resultTag).text(result);
+}
 
 function startQuiz() {
     currentQuestionIndex = 0;
     userPoints = 0;
     gameClock = 75;
     // disable view high score button
-    viewHigh.addClass()
     viewHigh.disabled = true;
     // start the game timer
     gameTimer();
